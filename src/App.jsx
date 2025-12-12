@@ -56,14 +56,13 @@ function App() {
 
       <nav className="tab-navigation">
         <button 
-          className={`tab-btn ${activeTab === 'users' ? 'active' : ''}`}
-          onClick={() => setActiveTab('users')}
+          className={`tab-btn`}
         >
           👥 Users ({users.length})
         </button>
         <button 
-          className={`tab-btn ${activeTab === 'cities' ? 'active' : ''}`}
-          onClick={() => setActiveTab('cities')}
+          className={`tab-btn }`}
+          
         >
           🏙️ Cities ({cities.length})
         </button>
@@ -80,44 +79,11 @@ function App() {
           <div className="loading">Loading data...</div>
         ) : (
           <>
-            {activeTab === 'users' && (
-              <section className="section">
-                <h2>Users</h2>
-                {users.length === 0 ? (
-                  <p className="no-data">No users found</p>
-                ) : (
-                  <div className="card-grid">
-                    {users.map(user => (
-                      <div key={user.id} className="card">
-                        <h3>{user.name}</h3>
-                        <p><strong>ID:</strong> {user.id}</p>
-                        <p><strong>Privilege:</strong> <span className="badge">{user.privilege}</span></p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
-            )}
+          
 
-            {activeTab === 'cities' && (
-              <section className="section">
-                <h2>Cities</h2>
-                {cities.length === 0 ? (
-                  <p className="no-data">No cities found</p>
-                ) : (
-                  <div className="card-grid">
-                    {cities.map(city => (
-                      <div key={city.id} className="card">
-                        <h3>🏢 {city.city}</h3>
-                        <p><strong>ID:</strong> {city.id}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
-            )}
+            
 
-            {activeTab === 'events' && (
+            
               <section className="section">
                 <h2>Events</h2>
                 {events.length === 0 ? (
@@ -147,7 +113,7 @@ function App() {
                   </div>
                 )}
               </section>
-            )}
+            
           </>
         )}
       </div>
