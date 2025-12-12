@@ -9,7 +9,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('users')
   const [error, setError] = useState(null)
 
-  const API_URL = 'http://localhost:3001/api'
+  const API_URL = 'http://localhost:3010/api'
 
   useEffect(() => {
     fetchData()

@@ -3,7 +3,7 @@ import cors from 'cors';
 import mysql from 'mysql2/promise';
 
 const app = express();
-const PORT = 3001;
+const PORT = 3010;
 
 // Middleware
 app.use(cors());
@@ -257,6 +257,88 @@ app.delete('/api/posts/:id', async (req, res) => {
 		await connection.query('DELETE FROM posts WHERE id = ?', [req.params.id]);
 		connection.release();
 		res.json({ message: 'Post deleted successfully' });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+});
+
+// =============== EVENTS ENDPOINTS ===============
+
+// GET all events
+app.get('/api/events', async (req, res) => {
+	try {
+		const connection = await pool.getConnection();
+		const [events] = await connection.query('SELECT * FROM event');
+		connection.release();
+		res.json(events);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+});
+
+// GET event by ID
+app.get('/api/events/:id', async (req, res) => {
+	try {
+		const connection = await pool.getConnection();
+		const [event] = await connection.query('SELECT * FROM event WHERE id = ?', [
+			req.params.id,
+		]);
+		connection.release();
+		if (event.length === 0) {
+			return res.status(404).json({ error: 'Event not found' });
+		}
+		res.json(event[0]);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+});
+
+// CREATE new event
+app.post('/api/events', async (req, res) => {
+	const { id, event_name, description, date, city_id, rating_id } = req.body;
+	if (!id || !event_name || !description || !date || !city_id) {
+		return res
+			.status(400)
+			.json({ error: 'All fields except rating_id are required' });
+	}
+	try {
+		const connection = await pool.getConnection();
+		await connection.query(
+			'INSERT INTO event (id, event_name, description, date, city_id, rating_id) VALUES (?, ?, ?, ?, ?, ?)',
+			[id, event_name, description, date, city_id, rating_id || null]
+		);
+		connection.release();
+		res
+			.status(201)
+			.json({ id, event_name, description, date, city_id, rating_id });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+});
+
+// UPDATE event
+app.put('/api/events/:id', async (req, res) => {
+	const { event_name, description, date, city_id, rating_id } = req.body;
+	try {
+		const connection = await pool.getConnection();
+		await connection.query(
+			'UPDATE event SET event_name = ?, description = ?, date = ?, city_id = ?, rating_id = ? WHERE id = ?',
+			[event_name, description, date, city_id, rating_id, req.params.id]
+		);
+		connection.release();
+		res.json({ message: 'Event updated successfully' });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+});
+
+// DELETE event
+app.delete('/api/events/:id', async (req, res) => {
+	try {
+		const connection = await pool.getConnection();
+		await connection.query('DELETE FROM event WHERE id = ?', [req.params.id]);
+		connection.release();
+		res.json({ message: 'Event deleted successfully' });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
