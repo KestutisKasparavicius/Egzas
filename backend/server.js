@@ -3,7 +3,7 @@ import cors from 'cors';
 import mysql from 'mysql2/promise';
 
 const app = express();
-const PORT = 3003;
+const PORT = 3001;
 
 // Middleware
 app.use(cors());
