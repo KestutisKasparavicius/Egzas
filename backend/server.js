@@ -3,7 +3,7 @@ import cors from 'cors';
 import mysql from 'mysql2/promise';
 
 const app = express();
-const PORT = 3001;
+const PORT = 3003;
 
 // Middleware
 app.use(cors());
@@ -14,7 +14,7 @@ const pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	password: 'xd',
-	database: 'egzas',
+	database: 'mydb',
 	waitForConnections: true,
 	connectionLimit: 10,
 	queueLimit: 0,
